@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: ai-tutor-api
+    env: python
+    region: oregon
+    buildCommand: pip install -r requirements.txt
+    startCommand: python3 server.py
+    envVars:
+      - key: GOOGLE_API_KEY
+        sync: false  # will be set manually from Render dashboard
