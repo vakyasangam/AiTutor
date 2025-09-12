@@ -112,7 +112,21 @@ async def startup_event():
         # We keep agent_chains empty so the app knows the agent is not available.
         agent_chains.clear()
 
+
+# --- 8. Keep Alive endpoint ---
+@app.get("/keep-alive")
+async def keep_alive():
+    """Ping endpoint to keep the server awake (used by UptimeRobot)."""
+    return {
+        "status": "alive",
+        "message": "✅ Server is awake and running",
+        "agent_ready": bool(agent_chains),
+        "lessons_available": os.path.exists(CURRICULUM_PATH)
+    }
+
+
 # --- 3. Pydantic models ---
+
 class ChatRequest(BaseModel):
     query: str
     language: Optional[str] = None

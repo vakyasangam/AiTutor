@@ -113,6 +113,18 @@ async def startup_event():
         agent_chains.clear()
 
 # --- 3. Pydantic models ---
+
+
+@app.get("/keep-alive")
+async def keep_alive():
+    """Ping endpoint to keep the server awake (used by UptimeRobot)."""
+    return {
+        "status": "alive",
+        "message": "✅ Server is awake and running",
+        "agent_ready": bool(agent_chains),
+        "lessons_available": os.path.exists(CURRICULUM_PATH)
+    }
+
 class ChatRequest(BaseModel):
     query: str
     language: Optional[str] = None
